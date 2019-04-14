@@ -7,7 +7,7 @@ class UsersController extends ApiController
 {
     public function initialize(){
         parent::initialize();
-        $this->restrictedActions =  [$this->request->params['controller']=>['logout']];
+        $this->restrictedActions =  [$this->request->params['controller']=>['logout', 'info']];
     }
 
     /**
@@ -77,16 +77,17 @@ class UsersController extends ApiController
             $this->jsonError("Information missing");
             return;
         }
-        $userInfo = $this->Users->find('all')
-        ->where(['username'=>$postData['username'], 'deleted' => 0]);
+        $user = $this->Users->find('all')
+        ->where(['username'=>$postData['username'], 'deleted' => 0])
+        ->first();
 
-        if (empty($userInfo) || !password_verify($postData['password'], $userInfo->first()['password'])){
+        if (empty($user) || !password_verify($postData['password'],$user['password'])){
             $this->jsonError("Could not verify");
             return;
         }
         $session = $this->getRequest()->getSession();
-        $session->write('user_id', $userInfo->first()['id'] );
-        $this->jsonSuccess("Logged in", ['username'=> $userInfo->first()['username']]);
+        $session->write('user_id', $user['id'] );
+        $this->jsonSuccess("Logged in", ['username'=> $user['username']]);
     }
 
     /**
@@ -97,5 +98,23 @@ class UsersController extends ApiController
     public function logout(){
         $session = $this->getRequest()->getSession()->destroy();
         $this->jsonSuccess("Used logged out");
+    }
+
+    /**
+     * Get user information of user associated with current session
+     */
+    public function info(){
+        $user = $this->Users->find('all')
+        ->where(['id'=>$this->request->session->read('user_id'), 'deleted'=> 0 ])
+        ->contain(['JobOffers' => function($q) use ($id){ 
+            $q->where(['Joboffers.deleted' => 0])
+            ->select(['Joboffers.title', 'Joboffers.content', 'Joboffers.user_id']);
+        }])
+        ->select('id', 'username', 'first_name', 'second_name', 'email_address')
+        ->first();
+        if(empty($user))
+            $this->jsonError("Could not find user information");
+        else 
+            $this->jsonSucces("Success", $user);
     }
 }

@@ -6,7 +6,9 @@ use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 use Cake\Network\Exception\ForbiddenException;
 /**
-*  Parent for controllers that return JSON and only accept AJAX requests.
+*  Parent for controllers that return JSON and accept AJAX requests.
+*  Pages served from PagesController demonstrate API, 
+*  but could be consumed by other clients.
 **/
 class ApiController extends AppController
 {

@@ -1,9 +1,6 @@
 <script>
     $(window).ready(event=>{
-        var url = "<?= $this->Url->build('/joboffers/create', [
-            'escape' => false,
-            'fullBase' => true,
-        ]);?>";
+        var url = "joboffers/create";
         $('#create_form input[type="submit"]').on('click', event=>{
             event.preventDefault();
             jsonForm(url, $('#create_form'));

@@ -16,7 +16,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
-use Cake\Network\Exception\ForbiddenException;
+use Cake\Network\Exception\UnauthorizedException;
 
 /**
 * Parent for all controllers in application
@@ -36,12 +36,20 @@ class AppController extends Controller
      * Checks every request for restriced actions. 
      * These are actions only logged in users can use.
      * All child controllers are responsible for setting own array of restricted actions in their initialize()
+     * 
+     * When user is trying to access restricted page, redirect him to login page.
+     * When it's an ajax request, throw unauthorized exception.
+     * 
      */
     public function beforeFilter(Event $event){
         $requestedController = $this->request->params['controller'];
         if (isset($this->restrictedActions) && !$this->isLoggedIn()){
             if (in_array($this->request->getParam('action'), $this->restrictedActions[$requestedController])){
-                throw new ForbiddenException();
+                if ($this->request->is('ajax'))
+                    throw new UnauthorizedException();
+                return $this->redirect(
+                    ['controller' => 'Pages', 'action' => 'login']
+                );
             }
         }
     }

@@ -1,17 +1,14 @@
 <script>
     $(window).ready(event=>{
-        var url = "<?= $this->Url->build('/users/register', [
-            'escape' => false,
-            'fullBase' => true,
-        ]);?>";
+        var url = "/users/register";
         $('#register_form input[type="submit"]').on('click', event=>{
             event.preventDefault();
-            jsonForm(url, $('#register_form'));
+            jsonForm(url, $('#register_form'), 'login');
         })
     });
 </script>
 
-
+<h1>Register</h1>
 <form id = 'register_form'>
     First name <input type="text" name="first_name"/><br>
     Last name <input type="text" name="last_name"/><br>

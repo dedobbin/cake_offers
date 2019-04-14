@@ -63,13 +63,13 @@ class JoboffersController extends ApiController
         }
         $this->clean($postData);
      
-        $offers = $this->Joboffers->find('all')
-        -> where(['deleted'=> 0, 'user_id'=>$userId]);
+        $offer = $this->Joboffers->find('all')
+        -> where(['deleted'=> 0, 'user_id'=>$userId])
+        ->first();
         if (empty($offers)){
             $this->jsonError("Could not find job offer");
             return;
         }
-        $offer = $offers->first();
         $offer->content = $postData['content'];
         $offer->title = $postData['title'];
         if ($this->JobOffers->save($offer))
@@ -93,13 +93,13 @@ class JoboffersController extends ApiController
             return;
         }
         $userId = $this->request->getSession()->read('user_id');
-        $offers = $this->Joboffers->find('all')
-        ->where(['deleted'=> 0, 'user_id'=>$userId]);
-        if (empty($offers)){
+        $offer = $this->Joboffers->find('all')
+        ->where(['deleted'=> 0, 'user_id'=>$userId])
+        ->first();
+        if (empty($offer)){
             $this->jsonError("Could not find job offer");
             return;
         }
-        $offer = $offers->first();
         $offer->deleted = 1;
         if ($this->JobOffers->save($offer))
             $this->jsonSuccess("Job offer deleted");

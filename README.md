@@ -1,4 +1,4 @@
-# Job offer demo app    
+# Cake offer demo app    
 ## Installation    
 Use ```composer install``` to download dependencies.    
 

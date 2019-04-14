@@ -1,6 +1,6 @@
 <script>
     $(window).ready(event=>{
-        var url = "<?= $this->Url->build('/joboffers/get/', ['escape' => false, 'fullBase' => true,]);?>";
+        var url = "<?= $this->Url->build('/joboffers/getown/', ['escape' => false, 'fullBase' => true,]);?>";
         sendJson(url, "POST", [], reply=>{
             reply.data.forEach( offer=>{
 

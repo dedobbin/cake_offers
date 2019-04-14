@@ -20,33 +20,25 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <?= $cakeDescription ?>:
-        <?= $this->fetch('title') ?>
-    </title>
-    <?= $this->Html->meta('icon') ?>
-
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('style.css') ?>
-
-    <?= $this->fetch('meta') ?>
-    <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>
-    <?= $this->Html->script('jquery-3.4.0.min.js'); ?>
     <script>
-        function jsonForm (url, form){
+        function jsonForm (url, form, successRedirectUrl, errorRedirectUrl){
             $.ajax({
                 type: "POST",
                 url: url,
                 cache: false,
                 data: form.serializeArray(),
                 dataType: 'json',
+                <?php //Woud be better to decouple backend and frontend, but for now this works, and is not focus of demo ?>
                 headers : {'X-CSRF-Token':  <?= json_encode($this->request->param('_csrfToken')); ?>},
                 success: data =>{
-                    $('#ajaxResponse').text(data.message)
+                    $('#ajaxResponse').text(data.message);
+                    if (successRedirectUrl)
+                        window.location.replace(successRedirectUrl);
                 },
                 error: data =>{
-                    $('#ajaxResponse').text(data.message)
+                    $('#ajaxResponse').text(data.message);
+                    if (errorRedirectUrl)
+                        window.location.replace(errorRedirectUrl);
                 },
             })
         }
@@ -64,12 +56,25 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             })
         }
     </script>
+    <title>
+        <?= $cakeDescription ?>:
+        <?= $this->fetch('title') ?>
+    </title>
+    <?= $this->Html->meta('icon') ?>
+
+    <?= $this->Html->css('base.css') ?>
+    <?= $this->Html->css('style.css') ?>
+
+    <?= $this->fetch('meta') ?>
+    <?= $this->fetch('css') ?>
+    <?= $this->fetch('script') ?>
+    <?= $this->Html->script('jquery-3.4.0.min.js'); ?>
 </head>
 <body>
     <nav class="top-bar expanded" data-topbar role="navigation">
         <ul class="title-area large-3 medium-4 columns">
             <li class="name">
-                <h1><a href="<?= $this->Url->build('/', ['escape' => false,'fullBase' => true,]);?>">Demo app</a></h1>
+                <h1><a href="<?= $this->Url->build('/', ['escape' => false,'fullBase' => true,]);?>">Home</a></h1>
             </li>
         </ul>
     </nav>
