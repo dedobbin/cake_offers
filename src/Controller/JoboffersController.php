@@ -154,7 +154,7 @@ class JoboffersController extends ApiController
      */
     public function get($id = NULL){
         //TODO: problem with the 'contains' approach is that we group per user now, not very dynamic
-        $users = $this->Users->find()
+        $users = $this->Users->find('all')
         ->contain(['JobOffers' => function($q) use ($id){ 
             $q->where(['Joboffers.deleted' => 0])
             ->select(['Joboffers.title', 'Joboffers.content', 'Joboffers.user_id']);

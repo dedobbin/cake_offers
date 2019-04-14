@@ -81,7 +81,7 @@ class UsersController extends ApiController
         ->where(['username'=>$postData['username'], 'deleted' => 0])
         ->first();
 
-        if (empty($user) || !password_verify($postData['password'],$user['password'])){
+        if (empty($user) || !password_verify($postData['password'], $user['password'])){
             $this->jsonError("Could not verify");
             return;
         }
@@ -104,17 +104,16 @@ class UsersController extends ApiController
      * Get user information of user associated with current session
      */
     public function info(){
-        $user = $this->Users->find('all')
-        ->where(['id'=>$this->request->session->read('user_id'), 'deleted'=> 0 ])
-        ->contain(['JobOffers' => function($q) use ($id){ 
+        $user_id = $this->request->getSession()->read('user_id');
+        $users = $this->Users->find()
+        ->contain(['JobOffers' => function($q){ 
             $q->where(['Joboffers.deleted' => 0])
             ->select(['Joboffers.title', 'Joboffers.content', 'Joboffers.user_id']);
+            return $q;
         }])
-        ->select('id', 'username', 'first_name', 'second_name', 'email_address')
-        ->first();
-        if(empty($user))
-            $this->jsonError("Could not find user information");
-        else 
-            $this->jsonSucces("Success", $user);
+        -> select(['id', 'username', 'first_name', 'last_name', 'email_address'])
+        -> where(['users.deleted'=> 0, 'id'=>$user_id]);
+        $this->jsonSuccess("Success", $users);
+        return;
     }
 }
