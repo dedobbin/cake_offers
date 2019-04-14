@@ -111,20 +111,18 @@ class JoboffersController extends ApiController
      * Returns all job offers created by a user.
      * 
      * Responds with success JSON, if no job offers are owned by user, even when there are no job offers.
-     * Responds with error JSON if no $username is given.
+     * Responds with error JSON if no $id is given.
      * 
-     * @param string $username is passed through URL
-     * Used this instead of ID because it's more user friendly then ID and also unique.
+     * @param int $id is passed through URL
      */
-    public function getFromUser($username = NULL){
-        if (empty($username)){
-            $this->jsonError("No username given");
+    public function getFromUser($userId = NULL){
+        if (empty($userId) || !ctype_digit($userId)){
+            $this->jsonError("No user ID given");
             return;
         }
-        $userId = $session = $this->getRequest()->getSession()->read('user_id');
         $offers = $this->Joboffers->find('all', ['order'=>['created'=>'asc']])
         ->select(['id', 'content', 'title'])
-        ->where(['user_id'=>$userId, 'deleted'=> 0]);
+        ->where(['user_id' => $userId, 'deleted'=> 0]);
         $this->jsonSuccess("Success", $offers);
         return;
     }
