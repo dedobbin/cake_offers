@@ -44,7 +44,7 @@ class UsersController extends ApiController
         //We don't want to clean/alter passwords, this could lead to mistake in future
         unset($postData['password']);
         unset($postData['password_retype']);
-        $this->clean($postData);
+        $this->encode($postData);
 
         $digest = password_hash ($this->request->getData('password'), PASSWORD_BCRYPT );
         $user = new Entity([

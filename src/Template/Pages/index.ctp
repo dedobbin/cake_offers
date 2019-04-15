@@ -14,7 +14,7 @@ $(window).ready( event=>{
     <p><a href="register">Register</a></p>
     <p><a href="login">Login</a></p>
     <p><a id ="logout">Logout</a></p>
-    <p><a href="joboffers">View all job offers</a></p>
+    <p><a href="list">View all job offers</a></p>
     <p><a href="create">Create new job offer</a></p>
     <p><a href="edit">Edit/delete my job offers</a>
 </div>

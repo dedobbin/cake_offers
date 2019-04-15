@@ -27,7 +27,7 @@ class JoboffersController extends ApiController
             $this->jsonError("Information missing");
             return;
         }
-        $this->clean($postData);
+        $this->encode($postData);
 
         if ($this->JobOffers->save(new Entity ([
             'title'     => $postData['title'],
@@ -70,7 +70,7 @@ class JoboffersController extends ApiController
             $this->jsonError("Information missing");
             return;
         }
-        $this->clean($postData);
+        $this->encode($postData);
      
         $offer->content = $postData['content'];
         $offer->title = $postData['title'];
@@ -152,7 +152,7 @@ class JoboffersController extends ApiController
      * 
      * Responds with success JSON containing users and their job offers
      */
-    public function get($id = NULL){
+    public function getAll($id = NULL){
         //TODO: problem with the 'contains' approach is that we group per user now, not very dynamic
         $users = $this->Users->find('all')
         ->contain(['JobOffers' => function($q) use ($id){ 

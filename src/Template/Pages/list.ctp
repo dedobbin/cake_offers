@@ -1,6 +1,6 @@
 <script>
     $(window).ready(event=>{
-        var url = "joboffers/get";
+        var url = "joboffers/getall";
         sendJson(url, "POST", [], reply=>{
             reply.data.forEach( author =>{
                 author.joboffers.forEach (offer=>{

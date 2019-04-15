@@ -20,8 +20,8 @@ class PagesController extends AppController
         $this -> render('index');
     }
 
-    public function jobOffers(){
-        $this -> render('joboffers');
+    public function list(){
+        $this -> render('list');
     }
 
     public function register(){

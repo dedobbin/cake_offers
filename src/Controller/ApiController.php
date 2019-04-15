@@ -88,7 +88,9 @@ class ApiController extends AppController
         return count($output) == 0;
     }
 
-    protected function clean(array &$input){
+    protected function encode(array &$input){
+        //Although cakePHP seems to strip out script tags,
+        // we don't want to ouput any HTML tags direcly in browser
         $input = array_map(function ($item){
             return htmlspecialchars($item);
         }, $input);
