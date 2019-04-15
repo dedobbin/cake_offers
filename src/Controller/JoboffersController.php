@@ -57,19 +57,21 @@ class JoboffersController extends ApiController
         $userId = $session = $this->getRequest()->getSession()->read('user_id');
         $postData = $this->request->getData();
 
+
+        $offer = $this->Joboffers->find('all')
+        -> where(['deleted'=> 0, 'user_id'=>$userId, 'id'=>$id])
+        ->first();
+        if (empty($offer)){
+            $this->jsonError("Could not find job offer");
+            return;
+        }
+
         if (!$this->validateForm(['title', 'content'], $postData)){
             $this->jsonError("Information missing");
             return;
         }
         $this->clean($postData);
      
-        $offer = $this->Joboffers->find('all')
-        -> where(['deleted'=> 0, 'user_id'=>$userId])
-        ->first();
-        if (empty($offers)){
-            $this->jsonError("Could not find job offer");
-            return;
-        }
         $offer->content = $postData['content'];
         $offer->title = $postData['title'];
         if ($this->JobOffers->save($offer))

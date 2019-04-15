@@ -9,7 +9,8 @@
 </script>
 
 <form id = 'create_form'>
-    Title <input type="text" name="title"/><br>
-    Content <input type="text" name="content"/><br>
+    Title:<br/> <input type="text" name="title"/><br/>
+    Content:<br/> <textarea name = content rows="5"></textarea>
+
     <input type="submit" value="Submit">
 </form> 

@@ -14,9 +14,10 @@
 
                 var element = document.createElement('form');
                 element.innerHTML = 
-                "Title: <input type='text' name = title value='"+ offer.title +"'/>" + 
-                "Content: <input type='text' name = content value='"+ offer.content +"'/>" +
-                "<hr/>";
+                'Title:<br/> <input type="text" name = title value="'+ offer.title +'"/><br/>' + 
+                'Content: <textarea  name = content rows="5">'  + offer.content +'</textarea>' +
+                '<hr/>';
+                console.log( element.innerHTML);
                 element.setAttribute('joboffer_id', offer.id);
                 element.append(editButton);
                 element.append(deleteButton);
